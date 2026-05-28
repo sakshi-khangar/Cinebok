@@ -1,0 +1,158 @@
+/* src/Pages/EventBooking.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+.event-booking-page{
+  min-height: 100vh;
+  padding: 100px 30px 40px;
+  background: var(--bg);
+  font-family: 'Poppins', sans-serif;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.event-booking-card{
+  width: 100%;
+  max-width: 950px;
+
+  background: var(--card-bg);
+
+  border: 1px solid var(--border);
+  border-radius: 26px;
+
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  box-shadow: var(--card-hover);
+}
+
+.booking-image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.booking-content{
+  padding: 34px;
+}
+
+.booking-category{
+  display: inline-block;
+
+  background: rgba(129,140,248,0.12);
+  color: #818cf8;
+
+  border: 1px solid rgba(129,140,248,0.2);
+
+  padding: 6px 14px;
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  margin-bottom: 18px;
+}
+.booking-content h1{
+  color: var(--text);
+
+  font-size: 2rem;
+  font-weight: 800;
+
+  margin-bottom: 18px;
+}
+
+.booking-content p{
+  color: var(--text-sub);
+
+  margin-bottom: 12px;
+
+  font-size: 0.95rem;
+}
+
+.ticket-section{
+  margin-top: 26px;
+}
+.ticket-section label{
+  display: block;
+
+  color: var(--text);
+
+  margin-bottom: 10px;
+
+  font-weight: 600;
+}
+
+.ticket-section select{
+  width: 100%;
+
+  padding: 14px;
+
+  background: var(--bg2);
+  color: var(--text);
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.booking-footer{
+  margin-top: 32px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.booking-footer h2{
+  color: #22c55e;
+
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.confirm-btn{
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+
+  color: white;
+
+  padding: 14px 22px;
+
+  border-radius: 14px;
+
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+
+  transition: 0.25s ease;
+}
+
+.confirm-btn:hover{
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+@media(max-width:768px){
+
+  .event-booking-card{
+    grid-template-columns: 1fr;
+  }
+
+  .booking-image{
+    height: 320px;
+  }
+
+  .booking-footer{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .confirm-btn{
+    width: 100%;
+  }
+
+}

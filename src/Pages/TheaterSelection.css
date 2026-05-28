@@ -1,0 +1,85 @@
+/* ============================================================
+   THEATERSELECTION.CSS — Light/Dark Theme
+============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.theater-container {
+  max-width: 760px; margin: 0 auto;
+  padding: 48px 24px 64px;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.theater-title {
+  font-size: 1.75rem; font-weight: 700;
+  color: var(--text); text-align: center; margin-bottom: 36px;
+}
+
+.theater-title::after {
+  content: ''; display: block; width: 60px; height: 3px;
+  background: linear-gradient(90deg, #6366f1, #f43f5e);
+  border-radius: 2px; margin: 10px auto 0;
+}
+
+.no-theater {
+  text-align: center; color: var(--text-muted);
+  font-size: 1rem; padding: 60px 20px;
+}
+
+.theater-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 28px;
+  margin-bottom: 16px;
+  box-shadow: var(--card-shadow);
+  position: relative; overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.theater-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: linear-gradient(180deg, #6366f1, #f43f5e);
+  border-radius: 4px 0 0 4px;
+}
+
+.theater-card:hover {
+  border-color: rgba(99,102,241,0.4);
+  box-shadow: var(--card-hover);
+  transform: translateY(-3px);
+}
+
+.theater-card h3 {
+  font-size: 1rem; font-weight: 600;
+  color: var(--text); margin-bottom: 16px; padding-left: 12px;
+}
+
+.timing-buttons { display: flex; flex-wrap: wrap; gap: 10px; padding-left: 12px; }
+
+.time-btn {
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 9px; color: var(--primary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.86rem; font-weight: 600;
+  padding: 9px 22px; cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.time-btn:hover {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: transparent; color: #fff;
+  box-shadow: 0 6px 18px rgba(99,102,241,0.35);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .theater-container { padding: 30px 14px 48px; }
+  .theater-title { font-size: 1.4rem; }
+  .theater-card { padding: 18px 18px 18px 22px; }
+  .time-btn { width: 100%; text-align: center; }
+}

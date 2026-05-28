@@ -1,0 +1,252 @@
+.profile-page {
+  padding: 30px;
+  color: var(--text, #fff);
+}
+
+.profile-card {
+  max-width: 500px;
+  margin: auto;
+  background: var(--bg2, #111827);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+h2{
+  text-align: center;
+}
+
+
+.avatar-section {
+  position: relative;
+  text-align: center;
+}
+
+.big-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #6366f1;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 40%;
+  background: #6366f1;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.details {
+  margin-top: 20px;
+  
+}
+
+.save-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.password-box {
+  margin-top: 20px;
+}
+
+.change-btn,
+.forgot-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.change-btn {
+  background: #22c55e;
+  color: white;
+}
+
+.forgot-btn {
+  background: transparent;
+  color: #f472b6;
+}
+
+.pass-form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pass-form input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: transparent;
+  color: white;
+}
+
+.msg {
+  margin-top: 10px;
+  color: #22c55e;
+}
+
+.popup-overlay{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.popup-box{
+  background:#111827;
+  padding:20px;
+  border-radius:12px;
+  width:300px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.popup-box input{
+  padding:8px;
+  border-radius:6px;
+  border:1px solid #333;
+  background:transparent;
+  color:white;
+}
+
+.details {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.details h3 {
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.input-group input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #2b2f3a;
+  background: #0f172a;
+  color: white;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.input-group input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.3);
+}
+.popup-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-box{
+  background: #111827;
+  padding: 24px;
+  border-radius: 14px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: pop 0.2s ease-in-out;
+}
+
+@keyframes pop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Title */
+.popup-box h3{
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+/* INPUT STYLE */
+.popup-box input{
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #2b2f3a;
+  background: #0f172a;
+  color: white;
+  outline: none;
+  transition: 0.2s;
+}
+
+.popup-box input:focus{
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
+}
+
+/* BUTTONS */
+.popup-box button{
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.popup-box button:first-of-type{
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+  color: white;
+}
+
+.popup-box button:first-of-type:hover{
+  opacity: 0.9;
+}
+
+.popup-box button:last-of-type{
+  background: transparent;
+  color: #f472b6;
+  border: 1px solid #2b2f3a;
+}
+
+.popup-box button:last-of-type:hover{
+  background: rgba(244,114,182,0.1);
+}
