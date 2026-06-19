@@ -1,122 +1,6 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import "../App.css";
-
-// const Signup = () => {
-//   const navigate = useNavigate();
-
-//   // toggle state
-//   const [isLogin, setIsLogin] = useState(false);
-
-//   // form states
-//   const [name, setName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   // SIGNUP FUNCTION
-//   const handleSignup = () => {
-//     if (!name || !email || !password) {
-//       alert("Please fill all fields");
-//       return;
-//     }
-
-//     const user = {
-//       name,
-//       email,
-//       password,
-//     };
-
-//     localStorage.setItem("user", JSON.stringify(user));
-
-//     alert("Signup successful!");
-//     setIsLogin(true);
-//   };
-
-//   // LOGIN FUNCTION
-//   const handleLogin = () => {
-//     const storedUser = JSON.parse(localStorage.getItem("user"));
-
-//     if (
-//       storedUser &&
-//       email === storedUser.email &&
-//       password === storedUser.password
-//     ) {
-//       alert("Login successful");
-
-//       localStorage.setItem("isLoggedIn", "true");
-
-//       navigate("/");
-//     } else {
-//       alert("Invalid email or password");
-//     }
-//   };
-
-//   return (
-//     <div className="signup-container">
-
-//       <div className="signup-box">
-
-//         <h2>
-//           {isLogin ? "Login" : "Signup"}
-//         </h2>
-
-//         {/* Name only for Signup */}
-//         {!isLogin && (
-//           <input
-//             type="text"
-//             placeholder="Full Name"
-//             value={name}
-//             onChange={(e) => setName(e.target.value)}
-//           />
-//         )}
-
-//         <input
-//           type="email"
-//           placeholder="Email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-
-//         <input
-//           type="password"
-//           placeholder="Password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-
-//         {isLogin ? (
-//           <button onClick={handleLogin}>
-//             Login
-//           </button>
-//         ) : (
-//           <button onClick={handleSignup}>
-//             Signup
-//           </button>
-//         )}
-
-//         <p className="toggle-text">
-//           {isLogin
-//             ? "Don't have an account?"
-//             : "Already have an account?"}
-
-//           <span
-//             onClick={() => setIsLogin(!isLogin)}
-//           >
-//             {isLogin ? " Signup" : " Login"}
-//           </span>
-//         </p>
-
-//       </div>
-
-//     </div>
-//   );
-// };
-
-// export default Signup;
-
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../App.css";
 
 const Signup = () => {
@@ -127,23 +11,33 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showForgot, setShowForgot] = useState(false);
+const [forgotEmail, setForgotEmail] = useState("");
+const [newPassword, setNewPassword] = useState("");
 
   // SIGNUP FUNCTION
-  const handleSignup = () => {
-    if (!name || !email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
 
-    const user = {
-      name,
-      email,
-      password,
-    };
+  const handleSignup = async () => {
+
+  if (!name || !email || !password) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  try {
+
+    const response = await axios.post(
+      "http://localhost:8080/api/auth/register",
+      {
+        name,
+        email,
+        password,
+      }
+    );
 
     localStorage.setItem(
       "user",
-      JSON.stringify(user)
+      JSON.stringify(response.data)
     );
 
     localStorage.setItem(
@@ -151,114 +45,266 @@ const Signup = () => {
       "true"
     );
 
-    alert("Signup successful!");
+    alert("Signup successful");
 
     navigate("/");
 
-    // IMPORTANT: refresh UI
     window.location.reload();
-  };
 
-  // LOGIN FUNCTION
-  const handleLogin = () => {
-    const storedUser = JSON.parse(
-      localStorage.getItem("user")
+  } catch (error) {
+
+    alert(
+      error.response?.data ||
+      "Signup failed"
     );
 
-    if (
-      storedUser &&
-      email === storedUser.email &&
-      password === storedUser.password
-    ) {
-      alert("Login successful");
+  }
 
-      localStorage.setItem(
-        "isLoggedIn",
-        "false"
-      );
+};
 
-      navigate("/");
+  // LOGIN FUNCTION
+const handleLogin = async () => {
 
-      window.location.reload();
-    } else {
-      alert("Invalid email or password");
-    }
-  };
+  try {
 
-  return (
-    <div className="signup-container">
+    const response = await axios.post(
+      "http://localhost:8080/api/auth/login",
+      {
+        email,
+        password,
+      }
+    );
 
-      <div className="signup-box">
+    localStorage.setItem(
+      "user",
+      JSON.stringify(response.data)
+    );
 
-        <h2>
-          {isLogin ? "Login" : "Signup"}
-        </h2>
+    localStorage.setItem(
+      "isLoggedIn",
+      "true"
+    );
 
-        {!isLogin && (
+    alert("Login successful");
+
+    navigate("/");
+
+    window.location.reload();
+
+  } catch (error) {
+
+    alert(
+      error.response?.data ||
+      "Invalid email or password"
+    );
+
+  }
+
+};
+
+const handleForgotPassword = async () => {
+
+  if (!forgotEmail || !newPassword) {
+    alert("Fill all fields");
+    return;
+  }
+
+  try {
+
+    const response = await axios.post(
+      "http://localhost:8080/api/auth/forgot-password",
+      {
+        email: forgotEmail,
+        newPassword: newPassword,
+      }
+    );
+
+    alert(response.data);
+
+    setShowForgot(false);
+
+    setForgotEmail("");
+
+    setNewPassword("");
+
+  } catch (error) {
+
+    alert(
+      error.response?.data ||
+      "Password reset failed"
+    );
+
+  }
+};
+
+return (
+  <div className="signup-container">
+
+    <div className="signup-box">
+
+      <h2>
+        {isLogin ? "Login" : "Signup"}
+      </h2>
+
+      {!isLogin && (
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) =>
+            setName(e.target.value)
+          }
+        />
+      )}
+
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) =>
+          setEmail(e.target.value)
+        }
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) =>
+          setPassword(e.target.value)
+        }
+      />
+
+      {isLogin ? (
+        <button onClick={handleLogin}>
+          Login
+        </button>
+      ) : (
+        <button onClick={handleSignup}>
+          Signup
+        </button>
+      )}
+
+      <hr />
+
+<button
+  onClick={() =>
+    window.location.href =
+      "http://localhost:8080/oauth2/authorization/google"
+  }
+>
+  Continue with Google
+</button>
+
+<button
+  onClick={() =>
+    window.location.href =
+      "http://localhost:8080/oauth2/authorization/github"
+  }
+>
+  Continue with GitHub
+</button>
+
+      {isLogin && (
+        <p
+          style={{
+            color: "#e50914",
+            cursor: "pointer",
+            marginTop: "10px",
+            textAlign: "center",
+          }}
+          onClick={() =>
+            setShowForgot(true)
+          }
+        >
+          Forgot Password?
+        </p>
+      )}
+
+      <p className="toggle-text">
+        {isLogin
+          ? "Don't have an account?"
+          : "Already have an account?"}
+
+        <span
+          onClick={() =>
+            setIsLogin(!isLogin)
+          }
+          style={{
+            cursor: "pointer",
+            fontWeight: "bold",
+            color: "#e50914",
+            marginLeft: "5px",
+          }}
+        >
+          {isLogin
+            ? " Signup"
+            : " Login"}
+        </span>
+      </p>
+
+      {/* FORGOT PASSWORD */}
+
+      {showForgot && (
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "15px",
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+          }}
+        >
+
+          <h3>Reset Password</h3>
+
           <input
-            type="text"
-            placeholder="Full Name"
-            value={name}
+            type="email"
+            placeholder="Enter Email"
+            value={forgotEmail}
             onChange={(e) =>
-              setName(e.target.value)
+              setForgotEmail(
+                e.target.value
+              )
             }
           />
-        )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-        />
-
-        {isLogin ? (
-          <button onClick={handleLogin}>
-            Login
-          </button>
-        ) : (
-          <button onClick={handleSignup}>
-            Signup
-          </button>
-        )}
-
-        <p className="toggle-text">
-          {isLogin
-            ? "Don't have an account?"
-            : "Already have an account?"}
-
-          <span
-            onClick={() =>
-              setIsLogin(!isLogin)
+          <input
+            type="password"
+            placeholder="New Password"
+            value={newPassword}
+            onChange={(e) =>
+              setNewPassword(
+                e.target.value
+              )
             }
-            style={{
-              cursor: "pointer",
-              fontWeight: "bold",
-              color: "#e50914",
-              marginLeft: "5px",
-            }}
-          >
-            {isLogin
-              ? " Signup"
-              : " Login"}
-          </span>
-        </p>
+          />
 
-      </div>
+          <button
+            onClick={
+              handleForgotPassword
+            }
+          >
+            Update Password
+          </button>
+
+          <button
+            style={{
+              marginTop: "10px",
+            }}
+            onClick={() =>
+              setShowForgot(false)
+            }
+          >
+            Close
+          </button>
+
+        </div>
+      )}
 
     </div>
-  );
+
+  </div>
+);
 };
 
 export default Signup;

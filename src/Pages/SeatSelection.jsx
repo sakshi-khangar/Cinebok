@@ -1,6 +1,6 @@
 // src/Pages/SeatSelection.jsx
-
-import React, { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./SeatSelection.css";
 
@@ -14,7 +14,8 @@ const SeatSelection = () => {
 
   const movie = location.state?.movie;
 
-  const [selectedSeats, setSelectedSeats] = useState([]);
+const [selectedSeats, setSelectedSeats] = useState([]);
+const [bookedSeats, setBookedSeats] = useState([]);
 
   const seatLayout = [
     { row: "A", type: "silver", price: 150 },
@@ -23,6 +24,30 @@ const SeatSelection = () => {
     { row: "D", type: "gold", price: 250 },
     { row: "E", type: "platinum", price: 400 },
   ];
+
+useEffect(() => {
+
+  if (!theater || !time) return;
+
+  axios
+    .get(
+      `http://localhost:8080/api/bookings/${theater.id}/${time}`
+    )
+    .then((response) => {
+
+      const seats = response.data.map(
+        (b) => b.seatNumber
+      );
+
+      setBookedSeats(seats);
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+}, [theater, time]);
+
 
   if (!theater || !time) {
     return (
@@ -37,16 +62,6 @@ const SeatSelection = () => {
     );
   }
 
-  const storedBookings =
-    JSON.parse(localStorage.getItem("bookings")) || [];
-
-  const bookedSeats = storedBookings
-    .filter(
-      (b) =>
-        b.theater === theater.name &&
-        b.time === time
-    )
-    .flatMap((b) => b.seats || []);
 
   const toggleSeat = (seatId) => {
 
@@ -92,40 +107,35 @@ const SeatSelection = () => {
     return total;
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
 
-    if (selectedSeats.length === 0) {
-      alert("Please select at least 1 seat");
-      return;
-    }
+  if (selectedSeats.length === 0) {
+    alert("Please select at least 1 seat");
+    return;
+  }
 
-    // ✅ Movie Name Fix
-    const movieName =
-      movie?.title ||
-      movie?.name ||
-      movie ||
-      "Unknown Movie";
+  const movieName =
+    movie?.title ||
+    movie?.name ||
+    movie ||
+    "Unknown Movie";
 
-    const bookingData = {
-      movie: movieName,
-      theater: theater.name,
-      city: theater.city,
-      time,
-      seats: selectedSeats,
-      total: calculateTotal(),
-      date: new Date().toLocaleString(),
-    };
+  try {
 
-    const oldBookings =
-      JSON.parse(localStorage.getItem("bookings")) || [];
+    await Promise.all(
 
-    localStorage.setItem(
-      "bookings",
-      JSON.stringify([
-        ...oldBookings,
-        bookingData,
-      ])
-    );
+  selectedSeats.map((seat) =>
+    axios.post(
+      "http://localhost:8080/api/bookings",
+      {
+        theaterId: theater.id,
+        showTime: time,
+        seatNumber: seat,
+      }
+    )
+  )
+
+);
 
     navigate("/confirmation", {
 
@@ -150,7 +160,17 @@ const SeatSelection = () => {
 
     });
 
-  };
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      "Some seats are already booked. Please refresh and try again."
+    );
+
+  }
+
+};
 
   return (
     <div className="seat-container">

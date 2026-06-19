@@ -34,7 +34,7 @@ function MovieCard({ movie }) {
       <div className="movie-image-wrapper">
 
         <img
-          src={movie.poster}
+          src={movie.poster || movie.posterUrl}
           alt={movie.title || movie.name}
           className="movie-image"
         />
